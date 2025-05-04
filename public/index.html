@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TetraLabs Solar Energy Simulation - Advanced open source solar energy analysis by Tetrachrome Studios">
+    <title>TetraLabs Solar Energy Simulation | Tetrachrome Studios</title>
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" as="style">
+    <link rel="preload" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" as="style">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css">
+    
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="" defer></script>
+    <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js" defer></script>
+    <script src="https://unpkg.com/leaflet-geometryutil@0.10.0/src/leaflet.geometryutil.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="app-shell">
+        <!-- Navigation Sidebar -->
+        <aside class="sidebar" aria-label="Navigation">
+            <div class="sidebar-content">
+                <div class="sidebar-header">
+                    <h1>OpenLabs Solar</h1>
+                    <p>by Tetrachrome Studios <span class="beta-tag">BETA</span></p>
+                </div>
+                
+                <nav class="sidebar-nav" aria-label="Main Navigation">
+                    <ul>
+                        <li>
+                            <a href="#mapConfigSection" class="nav-link active">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                                </svg>
+                                <span>Map & Config</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#simulationDataSection" class="nav-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M3 3v18h18M18 9l-6-6-6 6M12 3v12"/>
+                                </svg>
+                                <span>Simulation Data</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <!-- Map & Config Section -->
+            <section id="mapConfigSection" class="section active">
+                <div class="map-container">
+                    <div id="map" tabindex="0" aria-label="Map for selecting area"></div>
+                </div>
+
+                <div class="config-container">
+                    <form class="config-form" aria-label="Simulation Configuration">
+                        <div class="config-grid">
+                            <section class="config-section" aria-labelledby="locationHeading">
+                                <h2 id="locationHeading">Location</h2>
+                                <div class="form-item">
+                                    <label for="latitude" class="required-field">Latitude</label>
+                                    <input type="number" id="latitude" step="0.000001" required aria-required="true" aria-describedby="latitudeHelp">
+                                    <div id="latitudeHelp" class="helper-text">Enter latitude in decimal degrees</div>
+                                </div>
+                                <div class="form-item">
+                                    <label for="longitude" class="required-field">Longitude</label>
+                                    <input type="number" id="longitude" step="0.000001" required aria-required="true" aria-describedby="longitudeHelp">
+                                    <div id="longitudeHelp" class="helper-text">Enter longitude in decimal degrees</div>
+                                </div>
+                                <div class="form-item">
+                                    <label for="area">Area</label>
+                                    <div class="area-display">
+                                        <input type="number" id="area" readonly aria-readonly="true">
+                                        <select id="areaUnit" aria-label="Area unit">
+                                            <option value="m2">m²</option>
+                                            <option value="km2">km²</option>
+                                            <option value="ha">hectares</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="config-section" aria-labelledby="panelHeading">
+                                <h2 id="panelHeading">Panel Setup</h2>
+                                <div class="form-item">
+                                    <label for="panelEfficiency">Panel Efficiency (%)</label>
+                                    <input type="number" id="panelEfficiency" value="20" min="1" max="100" step="0.1" aria-describedby="efficiencyHelp">
+                                    <div id="efficiencyHelp" class="helper-text">Typical range: 15-22%</div>
+                                </div>
+                                <div class="form-item">
+                                    <label for="panelArea">Panel Area (m²)</label>
+                                    <input type="number" id="panelArea" value="1.6" min="0.1" step="0.1" aria-describedby="areaHelp">
+                                    <div id="areaHelp" class="helper-text">Standard panel size: 1.6-1.7 m²</div>
+                                </div>
+                                <div class="form-item">
+                                    <label for="panelCount">Number of Panels</label>
+                                    <input type="number" id="panelCount" value="1" min="1" step="1" aria-describedby="countHelp">
+                                    <div id="countHelp" class="helper-text">Based on available area</div>
+                                </div>
+                                <div class="form-item">
+                                    <label for="tiltAngle">Tilt Angle (°)</label>
+                                    <input type="number" id="tiltAngle" value="30" min="0" max="90" step="1" aria-describedby="tiltHelp">
+                                    <div id="tiltHelp" class="helper-text">Optimal angle varies by location</div>
+                                </div>
+                                <div class="form-item">
+                                    <label for="azimuthAngle">Azimuth Angle (°)</label>
+                                    <input type="number" id="azimuthAngle" value="180" min="0" max="360" step="1" aria-describedby="azimuthHelp">
+                                    <div id="azimuthHelp" class="helper-text">180° = South-facing</div>
+                                </div>
+                                <div class="form-item">
+                                    <div class="toggle">
+                                        <input type="checkbox" id="netMetering" class="toggle__input" aria-describedby="netMeteringHelp">
+                                        <label for="netMetering" class="toggle__label">
+                                            <span class="toggle__text--left">Net Metering</span>
+                                            <span class="toggle__appearance"></span>
+                                            <span class="toggle__text--right">Enabled</span>
+                                        </label>
+                                    </div>
+                                    <div id="netMeteringHelp" class="helper-text">Enable to calculate savings including excess power sold back to the grid</div>
+                                </div>
+                            </section>
+
+                            <section class="config-section" aria-labelledby="lossesHeading">
+                                <h2 id="lossesHeading">System Losses</h2>
+                                <div class="form-item">
+                                    <label for="systemLosses">System Losses (%)</label>
+                                    <input type="number" id="systemLosses" value="14" min="0" max="100" step="0.1" aria-describedby="lossesHelp">
+                                    <div id="lossesHelp" class="helper-text">Typical range: 10-20%</div>
+                                </div>
+                            </section>
+                        </div>
+
+                        <div class="config-actions">
+                            <button id="simulateButton" class="btn btn-primary" type="button" aria-label="Run simulation">
+                                <svg class="btn-icon" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                                    <path d="M8 0C3.6 0 0 3.6 0 8s3.6 8 8 8 8-3.6 8-8-3.6-8-8-8zm0 14c-3.3 0-6-2.7-6-6s2.7-6 6-6 6 2.7 6 6-2.7 6-6 6zm.5-9H7v4l3.2 1.9.8-1.3-2.5-1.5V5z"/>
+                                </svg>
+                                Simulate
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Simulation Data Section -->
+            <section id="simulationDataSection" class="section">
+              <div class="sim-cards">
+                <!-- Summary Card -->
+                <div class="sim-card sim-summary-card">
+                  <h2>Simulation Summary</h2>
+                  <div class="sim-metrics">
+                    <div class="sim-metric">
+                      <span class="sim-metric-label">Annual Energy</span>
+                      <span class="sim-metric-value" id="annualEnergy">-<span class="unit">kWh</span></span>
+                    </div>
+                    <div class="sim-metric">
+                      <span class="sim-metric-label">Peak Power</span>
+                      <span class="sim-metric-value" id="peakPower">-<span class="unit">kW</span></span>
+                    </div>
+                    <div class="sim-metric">
+                      <span class="sim-metric-label">Efficiency</span>
+                      <span class="sim-metric-value" id="efficiencyFactor">-<span class="unit">%</span></span>
+                    </div>
+                    <div class="sim-metric">
+                      <span class="sim-metric-label">Carbon Offset</span>
+                      <span class="sim-metric-value" id="carbonOffset">-<span class="unit">kg CO₂</span></span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Results Cards (Environmental, Financial, etc.) -->
+                <div id="resultsSection" class="sim-card-group"></div>
+
+                <!-- Chart Card -->
+                <div class="sim-card">
+                  <div class="sim-card-header">
+                    <h3>Monthly Performance</h3>
+                    <div class="chart-controls">
+                      <button class="active" data-view="energy">Energy</button>
+                      <button data-view="carbon">Carbon</button>
+                      <button data-view="efficiency">Efficiency</button>
+                    </div>
+                  </div>
+                  <div class="monthly-chart">
+                    <canvas id="monthlyChart" aria-label="Monthly Energy and Carbon Chart"></canvas>
+                  </div>
+                </div>
+
+                <!-- Table Card -->
+                <div class="sim-card">
+                  <h3>Monthly Data Table</h3>
+                  <div id="dataAnalysis"></div>
+                </div>
+              </div>
+            </section>
+
+    
+
+            <div id="loading" class="loading-overlay" style="display: none;" aria-live="polite" aria-busy="true">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">
+                    <h3>Loading...</h3>
+                    <p>Retrieving data...</p>
+                </div>
+            </div>
+
+            <div id="error" class="error-notification" role="alert" style="display: none;"></div>
+
+            <footer class="footer">
+                <div class="footer-content">
+                    <p>&copy; 2025 <a href="https://tetrachromestudios.com" target="_blank">Tetrachrome Studios</a>. All rights reserved.</p>
+                    <div class="footer-links">
+                        <a href="/reference" target="_blank">Technical References</a>
+                    </div>
+                    <div class="credits">
+                        <p>Software Development by <a>Mac Turner</a>, Lead Developer at Tetrachrome Studios</p>
+                    </div>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Report Problem Modal -->
+    <div id="reportProblemModal" class="modal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="reportProblemTitle" style="display:none;">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 id="reportProblemTitle">Report a Problem</h3>
+                <p class="modal-subtitle">Help us improve TetraLabs! Tell us about any issues with the UX, science, or anything else.</p>
+            </div>
+            <div class="modal-content">
+                <form id="reportProblemForm">
+                    <div class="form-item">
+                        <label for="problemCategory" class="required-field">Category</label>
+                        <select id="problemCategory" required aria-required="true">
+                            <option value="UX">User Experience (UX)</option>
+                            <option value="Science">Science/Data</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-item">
+                        <label for="problemMessage" class="required-field">Describe the problem</label>
+                        <textarea id="problemMessage" rows="4" required aria-required="true" placeholder="Please describe the issue in detail..."></textarea>
+                    </div>
+                    <div class="form-item">
+                        <label for="problemName">Your Name (optional)</label>
+                        <input type="text" id="problemName">
+                    </div>
+                    <div class="form-item">
+                        <label for="problemEmail">Your Email (optional)</label>
+                        <input type="email" id="problemEmail">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-modal-close id="cancelReportBtn">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+                <div id="reportProblemThankYou" style="display:none;">
+                    <h4>Thank you for your feedback!</h4>
+                    <p>We appreciate your help in making TetraLabs better.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

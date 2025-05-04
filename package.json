@@ -1,0 +1,32 @@
+{
+  "name": "pvgis-api",
+  "version": "1.0.0",
+  "description": "A Node.js wrapper for the PVGIS API to get solar radiation data",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "pvgis",
+    "solar",
+    "radiation",
+    "api"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.9.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.18.2",
+    "express-validator": "^7.0.1",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "directories": {
+    "example": "examples"
+  }
+}

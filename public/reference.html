@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TetraLabs Solar Energy Simulation - Reference Documentation">
+    <title>Reference Documentation | TetraLabs Solar Energy Simulation</title>
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" as="style">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+</head>
+<body>
+    <div class="app-shell">
+        <!-- Navigation Sidebar -->
+        <aside class="sidebar" aria-label="Navigation">
+            <div class="sidebar-content">
+                <div class="sidebar-header">
+                    <h1>OpenLabs Solar</h1>
+                    <p>by Tetrachrome Studios <span class="beta-tag">BETA</span></p>
+                </div>
+                
+                <nav class="sidebar-nav" aria-label="Main Navigation">
+                    <ul>
+                        <li>
+                            <a href="#dataSourcesSection" class="nav-link active">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                                </svg>
+                                <span>Data Sources</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#calculationsSection" class="nav-link">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M3 3v18h18M18 9l-6-6-6 6M12 3v12"/>
+                                </svg>
+                                <span>Calculations</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <!-- Data Sources Section -->
+            <section id="dataSourcesSection" class="section active">
+                <div class="sim-card">
+                    <h2>Data Sources and Methodology</h2>
+                    <p>This document outlines the sources and methodology used for the carbon intensity and energy price data in the solar energy simulation application.</p>
+
+                    <h3>Carbon Intensity Data (gCO2eq/kWh)</h3>
+                    
+                    <h4>North America</h4>
+                    <ul>
+                        <li>Canada (30 gCO2eq/kWh): <a href="https://www.canada.ca/en/environment-climate-change.html" target="_blank">Environment and Climate Change Canada</a></li>
+                        <li>United States (380 gCO2eq/kWh): <a href="https://www.eia.gov/" target="_blank">U.S. Energy Information Administration</a></li>
+                        <li>Mexico (450 gCO2eq/kWh): <a href="https://www.gob.mx/sener" target="_blank">Secretaría de Energía</a></li>
+                    </ul>
+
+                    <h4>Europe</h4>
+                    <ul>
+                        <li>European Union Average (230 gCO2eq/kWh): <a href="https://www.eea.europa.eu/" target="_blank">European Environment Agency</a></li>
+                        <li>United Kingdom (225 gCO2eq/kWh): <a href="https://www.gov.uk/government/organisations/department-for-business-energy-and-industrial-strategy" target="_blank">Department for Business, Energy & Industrial Strategy</a></li>
+                        <li>Germany (350 gCO2eq/kWh): <a href="https://www.umweltbundesamt.de/" target="_blank">Umweltbundesamt</a></li>
+                        <li>France (50 gCO2eq/kWh): <a href="https://www.rte-france.com/" target="_blank">Réseau de Transport d'Électricité</a></li>
+                        <li>Spain (180 gCO2eq/kWh): <a href="https://www.ree.es/" target="_blank">Red Eléctrica de España</a></li>
+                        <li>Italy (280 gCO2eq/kWh): <a href="https://www.terna.it/" target="_blank">Terna</a></li>
+                        <li>Sweden (15 gCO2eq/kWh): <a href="https://www.svk.se/" target="_blank">Svenska Kraftnät</a></li>
+                        <li>Norway (20 gCO2eq/kWh): <a href="https://www.statnett.no/" target="_blank">Statnett</a></li>
+                        <li>Denmark (180 gCO2eq/kWh): <a href="https://energinet.dk/" target="_blank">Energinet</a></li>
+                    </ul>
+
+                    <h3>Energy Prices ($/kWh)</h3>
+                    
+                    <h4>North America</h4>
+                    <ul>
+                        <li>Canada ($0.12/kWh): <a href="https://www.statcan.gc.ca/" target="_blank">Statistics Canada</a></li>
+                        <li>United States ($0.14/kWh): <a href="https://www.eia.gov/" target="_blank">U.S. Energy Information Administration</a></li>
+                        <li>Mexico ($0.08/kWh): <a href="https://www.cfe.mx/" target="_blank">Comisión Federal de Electricidad</a></li>
+                    </ul>
+
+                    <h4>Europe</h4>
+                    <ul>
+                        <li>European Union Average ($0.22/kWh): <a href="https://ec.europa.eu/eurostat" target="_blank">Eurostat</a></li>
+                        <li>United Kingdom ($0.25/kWh): <a href="https://www.ofgem.gov.uk/" target="_blank">Ofgem</a></li>
+                        <li>Germany ($0.35/kWh): <a href="https://www.bundesnetzagentur.de/" target="_blank">Bundesnetzagentur</a></li>
+                        <li>France ($0.18/kWh): <a href="https://www.cre.fr/" target="_blank">Commission de Régulation de l'Énergie</a></li>
+                        <li>Spain ($0.20/kWh): <a href="https://www.cnmc.es/" target="_blank">Comisión Nacional de los Mercados y la Competencia</a></li>
+                    </ul>
+
+                    <h3>Methodology Notes</h3>
+                    <ol>
+                        <li><strong>Carbon Intensity</strong>
+                            <ul>
+                                <li>Values represent the average grid mix carbon intensity</li>
+                                <li>Includes scope 1 and 2 emissions</li>
+                                <li>Based on 2023 data where available</li>
+                                <li>Values are in grams of CO2 equivalent per kilowatt-hour (gCO2eq/kWh)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Energy Prices</strong>
+                            <ul>
+                                <li>Values represent average residential electricity prices</li>
+                                <li>Includes all taxes and fees</li>
+                                <li>Based on 2023 data where available</li>
+                                <li>Values are in US dollars per kilowatt-hour ($/kWh)</li>
+                            </ul>
+                        </li>
+                    </ol>
+
+                    <div class="disclaimer">
+                        <h4>Disclaimer</h4>
+                        <p>This data is provided for educational and simulation purposes only. Actual values may vary based on:</p>
+                        <ul>
+                            <li>Time of day</li>
+                            <li>Season</li>
+                            <li>Local conditions</li>
+                            <li>Market fluctuations</li>
+                            <li>Government policies</li>
+                            <li>Grid infrastructure</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Calculations Section -->
+            <section id="calculationsSection" class="section">
+                <div class="sim-card">
+                    <h2>Solar Energy Simulation Calculations</h2>
+                    <p>This document outlines the mathematical calculations and methodology used in the solar energy simulation application.</p>
+
+                    <h3>Core Calculations</h3>
+
+                    <h4>1. Panel Capacity Calculation</h4>
+                    <pre><code>// Calculate maximum number of panels that can fit
+const panelWidth = Math.sqrt(panelArea);
+const effectivePanelArea = Math.pow(panelWidth + spacing, 2);
+const maxPanels = Math.floor(totalArea / effectivePanelArea);
+
+// Calculate system capacity
+const totalArea = maxPanels * panelArea;
+const peakPower = totalArea * 1000 * efficiency * (1 - systemLosses);</code></pre>
+
+                    <h4>2. Monthly Energy Production</h4>
+                    <pre><code>// For each month:
+const tempFactor = 1 - (0.004 * (avgTemperature - 25)); // Temperature coefficient
+const monthlyEfficiency = baseEfficiency * tempFactor * (1 - systemLosses);
+const monthlyEnergy = totalArea * avgIrradiation * monthlyEfficiency;
+
+// Convert to daily peak sun hours
+const daysInMonth = new Date(2000, month, 0).getDate();
+const dailyPeakSunHours = avgIrradiation / daysInMonth;</code></pre>
+
+                    <h4>3. Efficiency Calculations</h4>
+                    <pre><code>// System efficiency factors
+const baseEfficiency = panelEfficiency / 100;
+const tempFactor = 1 - (0.004 * (temperature - 25)); // -0.4% per °C
+const systemLosses = systemLossesPercentage / 100;
+const monthlyEfficiency = baseEfficiency * tempFactor * (1 - systemLosses);
+
+// Overall system efficiency
+const theoreticalMax = totalArea * 1000 * avgPeakSunHours * 365 * baseEfficiency;
+const efficiencyFactor = (annualEnergy / theoreticalMax) * 100;</code></pre>
+
+                    <h4>4. Financial Calculations</h4>
+                    <pre><code>// Initial investment
+const costPerWatt = 2.50; // $2.50 per watt (2024 average)
+const systemSize = panelCount * panelArea * 1000;
+const initialCost = systemSize * costPerWatt;
+
+// Annual savings
+const annualSavings = annualEnergy * energyPrice;
+
+// Payback period
+const paybackPeriod = initialCost / annualSavings;
+
+// ROI calculation
+const lifetimeSavings = annualSavings * 25; // 25-year system lifetime
+const roi = ((lifetimeSavings - initialCost) / initialCost) * 100;</code></pre>
+
+                    <h4>5. Environmental Impact</h4>
+                    <pre><code>// Carbon offset
+const carbonOffset = annualEnergy * carbonIntensity;
+
+// Equivalent metrics
+const treesEquivalent = carbonOffset / 22; // Each tree absorbs ~22 kg CO2/year
+const carsOffset = carbonOffset / 4600; // Average car emits 4.6 metric tons CO2/year</code></pre>
+
+                    <h3>Constants and Assumptions</h3>
+
+                    <h4>System Parameters</h4>
+                    <ul>
+                        <li>Panel spacing: 0.5 meters</li>
+                        <li>Temperature coefficient: -0.4% per °C</li>
+                        <li>System lifetime: 25 years</li>
+                        <li>Standard Test Conditions (STC):
+                            <ul>
+                                <li>Irradiance: 1000 W/m²</li>
+                                <li>Temperature: 25°C</li>
+                                <li>Air mass: 1.5</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <h4>Financial Parameters</h4>
+                    <ul>
+                        <li>Cost per watt: $2.50 (2024 average)</li>
+                        <li>Net metering rate: 70% of retail rate</li>
+                        <li>Peak rate: 120% of retail rate</li>
+                        <li>Off-peak rate: 80% of retail rate</li>
+                    </ul>
+
+                    <h4>Environmental Parameters</h4>
+                    <ul>
+                        <li>Tree absorption: 22 kg CO2/year</li>
+                        <li>Car emissions: 4.6 metric tons CO2/year</li>
+                        <li>Average household consumption: 9000 kWh/year</li>
+                    </ul>
+
+                    <div class="validation">
+                        <h3>Validation</h3>
+                        <p>The calculations have been validated against:</p>
+                        <ul>
+                            <li>PVGIS API results</li>
+                            <li>Industry standard solar calculators</li>
+                            <li>Real-world solar installation data</li>
+                        </ul>
+                        <p>However, as with any simulation, results should be considered estimates and may vary based on:</p>
+                        <ul>
+                            <li>Local weather conditions</li>
+                            <li>Installation quality</li>
+                            <li>System degradation</li>
+                            <li>Market fluctuations</li>
+                            <li>Government policies</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="footer">
+                <div class="footer-content">
+                    <p>&copy; 2025 <a href="https://tetrachromestudios.com" target="_blank">Tetrachrome Studios</a>. All rights reserved.</p>
+                    <div class="footer-links">
+                    </div>
+                    <div class="credits">
+                        <p>Software Development by <a>Mac Turner</a>, Lead Developer at Tetrachrome Studios</p>
+                    </div>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        // Simple navigation script
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.section');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    // Remove active class from all links and sections
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    sections.forEach(s => s.classList.remove('active'));
+                    
+                    // Add active class to clicked link
+                    link.classList.add('active');
+                    
+                    // Show corresponding section
+                    const targetId = link.getAttribute('href').substring(1);
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html> 
